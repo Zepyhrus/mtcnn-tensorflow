@@ -1,0 +1,31 @@
+{
+  "explorer.confirmDelete": false,
+  "cmake-tools-helper.cmake_download_path": "/home/sherk/.vscode/extensions/maddouri.cmake-tools-helper-0.2.1/cmake_download",
+  "window.zoomLevel": 0,
+  "cmake.configureOnOpen": true,
+  "explorer.confirmDragAndDrop": false,
+  "editor.minimap.enabled": false,
+  "editor.tabSize": 2,
+  "editor.formatOnPaste": true,
+  "git.enableSmartCommit": true,
+  "breadcrumbs.enabled": true,
+  "python.linting.enabled": false,
+  "files.exclude": {
+    "**/*.jpg": true,
+    "**/*.JPG": true,
+    "**/*.JPEG": true,
+    "**/*.png": true,
+    "**/*.PNG": true,
+    "**/*.tiff": true,
+    "**/*.ckpt": true,
+    "**/*.pyc": true,
+    "./data/**": true,
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "./data/**": true,
+    "**/data/**": true,
+  },
+  "python.pythonPath": "/home/sherk/anaconda3/envs/caffe-gpu/bin/python"
+}
