@@ -27,5 +27,5 @@
     "./data/**": true,
     "**/data/**": true,
   },
-  "python.pythonPath": "/home/sherk/anaconda3/envs/caffe-gpu/bin/python"
+  "python.pythonPath": "/home/sherk/anaconda3/envs/tensorflow-gpu/bin/python"
 }

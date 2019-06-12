@@ -33,3 +33,24 @@ def iou(box, boxes):
   #重叠部分面积
   inter = w*h
   return inter/(box_area+area-inter+1e-10)
+
+
+def convert_to_square(box):
+  '''将box转换成更大的正方形
+  参数：
+    box：预测的box,[n,5]
+  返回值：
+    调整后的正方形box，[n,5]
+  '''
+  square_box = box.copy()
+  h = box[:, 3]-box[:, 1]+1
+  w = box[:, 2]-box[:, 0]+1
+  #找寻正方形最大边长
+  max_side = np.maximum(w, h)
+
+  square_box[:, 0] = box[:, 0]+w*0.5-max_side*0.5
+  square_box[:, 1] = box[:, 1]+h*0.5-max_side*0.5
+  square_box[:, 2] = square_box[:, 0]+max_side-1
+  square_box[:, 3] = square_box[:, 1]+max_side-1
+  
+  return square_box
