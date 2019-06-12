@@ -59,8 +59,7 @@ class Detector:
                 real_size = m
             cls_prob, bbox_pred, landmark_pred = self.sess.run([self.cls_prob, self.bbox_pred, self.landmark_pred],
                                                                feed_dict={self.image_op: data})
-
-            print()
+                                                               
 
             cls_prob_list.append(cls_prob[:real_size])
             bbox_pred_list.append(bbox_pred[:real_size])

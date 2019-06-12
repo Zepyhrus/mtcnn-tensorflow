@@ -22,7 +22,7 @@ def py_nms(dets, thresh):
     :thresh: 0.5 like
     :returns: suppressed boxes
     """
-    if not dets:
+    if dets is None:
         return None
 
     x1 = dets[:, 0]
@@ -67,7 +67,7 @@ class MtcnnDetector:
                  min_face_size=20,
                  stride=2,
                  threshold=[0.6, 0.7, 0.8],  # this is define from config.py, original [0.6, 0.7, 0.7]
-                 scale_factor=0.709  # 图像金字塔的缩小率
+                 scale_factor=0.909  #TODO: 图像金字塔的缩小率, original 0.709
                  ):
         self.pnet_detector = detectors[0]
         self.rnet_detector = detectors[1]
@@ -152,7 +152,7 @@ class MtcnnDetector:
             return None, None, None
         all_boxes = np.vstack(all_boxes)
         #将金字塔之后的box也进行非极大值抑制
-        keep = py_nms(all_boxes[:, 0:5], 0.5)  # original nms 0.7
+        keep = py_nms(all_boxes[:, 0:5], 0.5)  #TODO: original nms 0.7
         all_boxes = all_boxes[keep]
         boxes = all_boxes[:, :5]
         #box的长宽
@@ -190,7 +190,7 @@ class MtcnnDetector:
         cropped_ims = np.zeros((num_boxes, 24, 24, 3), dtype=np.float32)
         for i in range(num_boxes):
             #将pnet生成的box相对与原图进行裁剪，超出部分用0补
-            if tmph[i] < 20 or tmpw[i] < 20:
+            if tmph[i] < self.min_face_size or tmpw[i] < self.min_face_size:
                 continue
             tmp = np.zeros((tmph[i], tmpw[i], 3), dtype=np.uint8)
             tmp[dy[i]:edy[i] + 1, dx[i]:edx[i] + 1,
@@ -391,8 +391,6 @@ class MtcnnDetector:
       """
         detect single image and draw bbox/confidence/landmarks on it
       """
-      assert img.shape.__len__(
-      ) == 3 & img.shape[2] == 3, "Error input image shape"
       boxes_c, landmarks = self.detect(img)
 
       for i in range(boxes_c.shape[0]):
@@ -401,16 +399,16 @@ class MtcnnDetector:
         corpbbox = [int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])]
         # 画人脸框
         cv2.rectangle(img, (corpbbox[0], corpbbox[1]),
-                      (corpbbox[2], corpbbox[3]), (0, 0, 255), 1)
+                      (corpbbox[2], corpbbox[3]), (0, 0, 255), 2)
         # 判别为人脸的置信度
         cv2.putText(img, '{:.2f}'.format(score),
                     (corpbbox[0], corpbbox[1] - 2),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.25, (0, 0, 255), 1)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 255), 2)
       
       # 画关键点, no landmarks during PNet/RNet testing period
-      if landmarks:
+      if landmarks is not None:
         for i in range(landmarks.shape[0]):
           for j in range(len(landmarks[i])//2):
-            cv2.circle(img, (int(landmarks[i][2*j]), int(int(landmarks[i][2*j+1]))), 0, (0, 0, 255), 1)
+            cv2.circle(img, (int(landmarks[i][2*j]), int(int(landmarks[i][2*j+1]))), 0, (0, 0, 255), 3)
 
       return img

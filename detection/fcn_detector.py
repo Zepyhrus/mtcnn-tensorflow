@@ -2,12 +2,7 @@
 # coding: utf-8
 
 # In[1]:
-
-
-import train.config as config
 import tensorflow as tf
-import sys
-sys.path.extend(['..', '../train'])
 
 
 # In[2]:
@@ -24,11 +19,13 @@ class FcnDetector:
             self.height_op = tf.placeholder(tf.int32, name='image_height')
             image_reshape = tf.reshape(
                 self.image_op, [1, self.height_op, self.width_op, 3])
-            #预测值
+            
+            # 预测值
             self.cls_prob, self.bbox_pred, _ = net_factory(
                 image_reshape, training=False)
             self.sess = tf.Session()
-            #重载模型
+            
+            # 重载模型
             saver = tf.train.Saver()
             model_file = tf.train.latest_checkpoint(model_path)
             saver.restore(self.sess, model_file)

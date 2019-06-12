@@ -22,7 +22,8 @@ from tqdm import tqdm
 
 
 # In[ ]:
-test_mode = config.test_mode
+# test_mode = config.test_mode
+test_mode = 'ONet'
 thresh = config.thresh
 min_face_size = config.min_face
 stride = config.stride

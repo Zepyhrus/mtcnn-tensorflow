@@ -26,7 +26,7 @@ def P_Net(inputs, label=None, bbox_target=None, landmark_target=None, training=T
                 net, kernel_size=[2, 2], stride=2, padding='SAME', scope='pool1')
             net = slim.conv2d(net, 16, 3, scope='conv2')
             net = slim.conv2d(net, 32, 3, scope='conv3')
-            #二分类输出通道数为2
+            # 二分类输出通道数为2
             conv4_1 = slim.conv2d(
                 net, 2, 1, activation_fn=tf.nn.softmax, scope='conv4_1')
             bbox_pred = slim.conv2d(
@@ -50,12 +50,14 @@ def P_Net(inputs, label=None, bbox_target=None, landmark_target=None, training=T
 
                 accuracy = cal_accuracy(cls_prob, label)
                 L2_loss = tf.add_n(slim.losses.get_regularization_losses())
+
                 return cls_loss, bbox_loss, landmark_loss, L2_loss, accuracy
             else:
-                #测试时batch_size=1
+                # 测试时batch_size=1
                 cls_pro_test = tf.squeeze(conv4_1, axis=0)
                 bbox_pred_test = tf.squeeze(bbox_pred, axis=0)
                 landmark_pred_test = tf.squeeze(landmark_pred, axis=0)
+
                 return cls_pro_test, bbox_pred_test, landmark_pred_test
 
 

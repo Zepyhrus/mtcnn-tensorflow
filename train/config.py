@@ -21,7 +21,7 @@ stride = 2
 #三个网络的阈值
 thresh = [0.6, 0.7, 0.8]  # TODO: the threshold of onet could be higher
 #最后测试选择的网络
-test_mode = 'RNet'
+test_mode = 'PNet'
 #选用图片还是摄像头,1是图像，2是摄像头
 input_mode = '1'
 #测试图片放置位置
