@@ -30,19 +30,20 @@ detectors = [None, None, None]
 # 模型放置位置
 model_path = ['model/PNet/', 'model/RNet/', 'model/ONet']
 batch_size = config.batches
-PNet = FcnDetector(P_Net, model_path[0])
+PNet = FcnDetector(P_Net, model_path[0])  # detecotors for PNet
 detectors[0] = PNet
 
 
 if test_mode in ["RNet", "ONet"]:
-    RNet = Detector(R_Net, 24, batch_size[1], model_path[1])
+    RNet = Detector(R_Net, 24, batch_size[1], model_path[1])  # detectors for RNet
     detectors[1] = RNet
 
 
 if test_mode == "ONet":
-    ONet = Detector(O_Net, 48, batch_size[2], model_path[2])
+    ONet = Detector(O_Net, 48, batch_size[2], model_path[2])  # detectors for ONet
     detectors[2] = ONet
 
+# Use the three detectors to construct a 
 mtcnn_detector = MtcnnDetector(detectors=detectors, min_face_size=min_face_size,
                                stride=stride, threshold=thresh)
 out_path = config.out_path

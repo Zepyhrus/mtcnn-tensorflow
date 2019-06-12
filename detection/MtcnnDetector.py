@@ -123,7 +123,7 @@ class MtcnnDetector:
     def detect_pnet(self, im):
         '''通过pnet筛选box和landmark
         参数：
-          im:输入图像[h,2,3]
+          im:输入图像[h, w, 3]
         '''
         h, w, c = im.shape
         net_size = 12
@@ -135,7 +135,7 @@ class MtcnnDetector:
         #图像金字塔
         while min(current_height, current_width) > net_size:
             #类别和box
-            cls_cls_map, reg = self.pnet_detector.predict(im_resized)
+            cls_cls_map, reg = self.pnet_detector.predict(im_resized)  # the im_resized is the fucking whole image?
             boxes = self.generate_bbox(
                 cls_cls_map[:, :, 1], reg, current_scale, self.thresh[0])
             current_scale *= self.scale_factor  # 继续缩小图像做金字塔
@@ -261,7 +261,9 @@ class MtcnnDetector:
         new_width = int(width * scale)
         new_dim = (new_width, new_height)
         img_resized = cv2.resize(img, new_dim, interpolation=cv2.INTER_LINEAR)
-        img_resized = (img_resized - 127.5) / 128
+        img_resized = (img_resized - 127.5) / 128 
+        # 1st: the de-bias process should be before the resize
+        # 2nd: the original process is substracting the mean of the image
         return img_resized
 
     def generate_bbox(self, cls_map, reg, scale, threshold):
