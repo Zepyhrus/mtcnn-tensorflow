@@ -80,7 +80,7 @@ sub_labels = labels.sample(labels.shape[0] // 20)
 
 for i in tqdm(range(sub_labels.shape[0])):
   src_img = join(img_dir, sub_labels.image_id.iloc[i])
-  des_img = join('pictures', sub_labels.image_id.iloc[i])
+  des_img = join('picture', sub_labels.image_id.iloc[i])
 
   try:
     shutil.copy(src_img, des_img)

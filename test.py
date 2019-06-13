@@ -24,8 +24,8 @@ from tqdm import tqdm
 # In[ ]:
 # test_mode = config.test_mode
 test_mode = 'ONet'
-thresh = config.thresh
-min_face_size = config.min_face
+thresh = [0.6, 0.7, 0.8]
+min_face_size = 24
 stride = config.stride
 detectors = [None, None, None]
 # 模型放置位置
@@ -56,31 +56,9 @@ if config.input_mode == '1':
     for item in tqdm(os.listdir(path)):
         img_path = os.path.join(path, item)
         img = cv2.imread(img_path)
-        # boxes_c, landmarks = mtcnn_detector.detect(img)
-        # for i in range(boxes_c.shape[0]):
-        #     bbox = boxes_c[i, :4]
-        #     score = boxes_c[i, 4]
-        #     corpbbox = [int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])]
-        #     #画人脸框
-        #     cv2.rectangle(img, (corpbbox[0], corpbbox[1]),
-        #                   (corpbbox[2], corpbbox[3]), (0, 0, 255), 1)
-        #     #判别为人脸的置信度
-        #     cv2.putText(img, '{:.2f}'.format(score),
-        #                 (corpbbox[0], corpbbox[1] - 2),
-        #                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-        # #画关键点
-        # for i in range(landmarks.shape[0]):
-        #     for j in range(len(landmarks[i])//2):
-        #         cv2.circle(
-        #             img, (int(landmarks[i][2*j]), int(int(landmarks[i][2*j+1]))), 0, (0, 0, 255), 3)
         img_labeled = mtcnn_detector.detect_and_draw(img)
 
         cv2.imwrite(out_path + item, img_labeled)
-    #     cv2.imshow('im',img)
-    #     k = cv2.waitKey(0) & 0xFF
-    #     if k == 27:
-    #         cv2.imwrite(out_path + item,img)
-    # cv2.destroyAllWindows()
 
 if config.input_mode == '2':
     cap = cv2.VideoCapture(0)
