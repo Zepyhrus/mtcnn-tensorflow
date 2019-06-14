@@ -3,16 +3,14 @@ This file is used to generate images from WIDER FACE dataset
 截取pos，neg,part三种类型图片并resize成12x12大小作为PNet的输入
 """
 
+import tensorflow as tf
+import cv2
 from utils import iou
-from tqdm import  tqdm
+from tqdm import tqdm
 import numpy as np
 import os
 import sys
 sys.path.extend(['prepare_data'])
-
-
-import cv2
-import tensorflow as tf
 
 
 # coding: utf-8
@@ -24,15 +22,16 @@ import tensorflow as tf
 '''
 npr = np.random
 
-#face的id对应label的txt
-anno_file = 'data/wider_face_train.txt'
-#图片地址
+# face的id对应label的txt
+# This file contains original wider face file and another 1207 missed celeba images
+anno_file = 'data/wider_face_celeba_train.txt'
+# 图片地址
 im_dir = 'data/WIDER_train/images'
-#pos，part,neg裁剪图片放置位置
+# pos，part,neg裁剪图片放置位置
 pos_save_dir = 'data/12/positive'
 part_save_dir = 'data/12/part'
 neg_save_dir = 'data/12/negative'
-#PNet数据地址
+# PNet数据地址
 save_dir = 'data/12'
 
 
@@ -89,7 +88,7 @@ for annotation in tqdm(annotations):
     #截取图片并resize成12x12大小
     cropped_im = img[ny:ny+size, nx:nx+size, :]
     resized_im = cv2.resize(cropped_im, (12, 12),
-                                interpolation=cv2.INTER_LINEAR)
+                            interpolation=cv2.INTER_LINEAR)
 
     #iou值小于0.3判定为neg图像
     if np.max(Iou) < 0.3:
@@ -123,7 +122,7 @@ for annotation in tqdm(annotations):
       Iou = iou(crop_box, boxes)
       cropped_im = img[ny1:ny1+size, nx1:nx1+size, :]
       resized_im = cv2.resize(
-        cropped_im, (12, 12), interpolation=cv2.INTER_LINEAR)
+          cropped_im, (12, 12), interpolation=cv2.INTER_LINEAR)
 
       if np.max(Iou) < 0.3:
         save_file = os.path.join(neg_save_dir, '%s.jpg' % n_idx)

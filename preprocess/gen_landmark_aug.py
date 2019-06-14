@@ -44,7 +44,7 @@ def main(args):
   if not os.path.exists(dstdir):
     os.makedirs(dstdir)
   #label记录txt
-  ftxt = os.path.join(data_dir, 'trainImageList.txt')
+  ftxt = os.path.join(data_dir, 'trainImageList_combined.txt')
   #记录label的txt
   f = open(os.path.join(OUTPUT, 'landmark_%d_aug.txt' % (size)), 'w')
   #获取图像路径，box，关键点
@@ -60,6 +60,9 @@ def main(args):
     gt_box = np.array([box.left, box.top, box.right, box.bottom])
     #人脸图片
     f_face = img[box.top:box.bottom+1, box.left:box.right+1]
+    if not np.array(f_face.shape).all():
+      continue
+    
     #resize成网络输入大小
     f_face = cv2.resize(f_face, (size, size))
 
@@ -183,8 +186,6 @@ def flip(face, landmark):
 
 
 # In[5]:
-
-
 def rotate(img, box, landmark, alpha):
   #旋转
   center = ((box.left+box.right)/2, (box.top+box.bottom)/2)
