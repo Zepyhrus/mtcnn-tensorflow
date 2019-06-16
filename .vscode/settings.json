@@ -1,6 +1,5 @@
 {
   "explorer.confirmDelete": false,
-  "cmake-tools-helper.cmake_download_path": "/home/sherk/.vscode/extensions/maddouri.cmake-tools-helper-0.2.1/cmake_download",
   "window.zoomLevel": 0,
   "cmake.configureOnOpen": true,
   "explorer.confirmDragAndDrop": false,
@@ -18,14 +17,19 @@
     "**/*.PNG": true,
     "**/*.tiff": true,
     "**/*.ckpt": true,
+    "**/*.meta": true,
     "**/*.pyc": true,
-    "./data/**": true,
+    "**/*.xml": true,
+    // "**/data/**": true,
+    // "**/error/**": true,
+    // "**/anno/**": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
-    "./data/**": true,
     "**/data/**": true,
+    "**/error/**": true,
+    "**/anno/**": true
   },
   "python.pythonPath": "/home/sherk/anaconda3/envs/tensorflow-gpu/bin/python"
 }

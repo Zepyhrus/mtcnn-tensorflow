@@ -61,8 +61,8 @@ def main(args):
   data = read_anno(base_dir, filename)
   mtcnn_detector = MtcnnDetector(detectors, min_face_size=min_face_size,
                    stride=stride, threshold=thresh)
-  save_path = data_dir
-  save_file = os.path.join(save_path, 'detections.pkl')
+  # save_path = data_dir
+  # save_file = os.path.join(save_path, 'detections.pkl')
   # if not os.path.exists(save_file):
     #将data制作成迭代器
   print('载入数据')
