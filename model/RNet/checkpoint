@@ -1,4 +1,6 @@
 model_checkpoint_path: "RNet-22"
+all_model_checkpoint_paths: "RNet-18"
+all_model_checkpoint_paths: "RNet-19"
 all_model_checkpoint_paths: "RNet-20"
 all_model_checkpoint_paths: "RNet-21"
 all_model_checkpoint_paths: "RNet-22"
