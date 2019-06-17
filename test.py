@@ -3,16 +3,16 @@
 
 # In[1]:
 import sys
-# sys.path.extend(['..', '../detection', '../train'])
+sys.path.extend(['detection', 'train'])
 
 # from detection folder
-from detection.MtcnnDetector import MtcnnDetector
-from detection.detector import Detector
-from detection.fcn_detector import FcnDetector
+from MtcnnDetector import MtcnnDetector
+from detector import Detector
+from fcn_detector import FcnDetector
 
 # from train folder
-from train.model import P_Net, R_Net, O_Net
-import train.config as config
+from model_factory import P_Net, R_Net, O_Net
+import config as config
 
 
 import cv2
@@ -24,7 +24,7 @@ from tqdm import tqdm
 # In[ ]:
 # test_mode = config.test_mode
 test_mode = 'ONet'
-thresh = [0.6, 0.7, 0.8]
+thresh = [0.5, 0.6, 0.9]
 min_face_size = 24
 stride = config.stride
 detectors = [None, None, None]
