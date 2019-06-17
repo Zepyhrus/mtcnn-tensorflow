@@ -143,7 +143,6 @@ def save_hard_example(save_size, data, neg_dir, pos_dir, part_dir, detectors):
         n_idx += 1
         neg_num += 1
       else:
-
         idx = np.argmax(Iou)
         assigned_gt = gts[idx]
         x1, y1, x2, y2 = assigned_gt

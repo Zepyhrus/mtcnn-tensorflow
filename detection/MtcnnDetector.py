@@ -67,7 +67,8 @@ class MtcnnDetector:
                  min_face_size=20,
                  stride=2,
                  threshold=[0.6, 0.7, 0.8],  # this is define from config.py, original [0.6, 0.7, 0.7]
-                 scale_factor=0.909  #TODO: 图像金字塔的缩小率, original 0.709
+                 scale_factor=0.909,  #TODO: 图像金字塔的缩小率, original 0.709
+                 nms_ratio=0.4
                  ):
         self.pnet_detector = detectors[0]
         self.rnet_detector = detectors[1]
@@ -76,6 +77,7 @@ class MtcnnDetector:
         self.stride = stride
         self.thresh = threshold
         self.scale_factor = scale_factor
+        self.nms_ratio = nms_ratio
 
     def detect_face(self, test_data):
         """
@@ -392,6 +394,12 @@ class MtcnnDetector:
         detect single image and draw bbox/confidence/landmarks on it
       """
       boxes_c, landmarks = self.detect(img)
+      if boxes_c.shape[0]:
+        keep = py_nms(boxes_c, self.nms_ratio)
+
+        boxes_c = boxes_c[keep]
+        if landmarks is not None:
+          landmarks = landmarks[keep]
 
       for i in range(boxes_c.shape[0]):
         bbox = boxes_c[i, :4]
@@ -399,11 +407,11 @@ class MtcnnDetector:
         corpbbox = [int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])]
         # 画人脸框
         cv2.rectangle(img, (corpbbox[0], corpbbox[1]),
-                      (corpbbox[2], corpbbox[3]), (0, 0, 255), 2)
+                      (corpbbox[2], corpbbox[3]), (0, 0, 255), 1)
         # 判别为人脸的置信度
         cv2.putText(img, '{:.2f}'.format(score),
                     (corpbbox[0], corpbbox[1] - 2),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 255), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1)
       
       # 画关键点, no landmarks during PNet/RNet testing period
       if landmarks is not None:
