@@ -20,8 +20,8 @@
 * RNet: 11 missing;
 * ONet-0.8: 117 missing;
 * ONet-0.9: 170 missing;
-* ONet is not trained;
-* ONet: 
+* ONet is not well trained;
+* ONet takes training examples from WIDER_FACES detected by RNet. yielding: 
   * landmark: 595k;
   * pos: 54k, pos is too few;
   * neg: 273k;
