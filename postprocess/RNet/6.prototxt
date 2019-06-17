@@ -1,0 +1,7 @@
+  propagate_down: true
+}
+layer {
+  name: "conv4"
+  type: "InnerProduct"
+  bottom: "conv3"
+  top: "conv4"

@@ -1,0 +1,8 @@
+}
+
+
+layer {
+  name: "conv4-1"
+  type: "Convolution"
+  bottom: "conv3"
+  top: "conv4-1"
