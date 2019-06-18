@@ -80,8 +80,13 @@ def R_Net(inputs, label=None, bbox_target=None, landmark_target=None, training=T
                 net, kernel_size=[3, 3], stride=2, scope='pool2')
             net = slim.conv2d(net, 64, 2, scope='conv3')
             fc_flatten = slim.flatten(net)
+            #TODO: added prelu activation by sherk
+            # The origin fully connection layer has no layer of activation
+            #   Or the default relu layer, which has no trainable parameters
+            #   While the prelu has;
             fc1 = slim.fully_connected(
-                fc_flatten, num_outputs=128, scope='fc1')
+                fc_flatten, num_outputs=128, scope='fc1_unactivated',
+                activation_fn=prelu)
 
             cls_prob = slim.fully_connected(
                 fc1, num_outputs=2, activation_fn=tf.nn.softmax, scope='cls_fc')
