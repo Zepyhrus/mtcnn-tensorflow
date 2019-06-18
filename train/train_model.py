@@ -17,7 +17,7 @@ import cv2
 # In[ ]:
 
 
-def train(net_factory, prefix, end_epoch, base_dir, display, base_lr):
+def train(net_factory, prefix, end_epoch, base_dir, display, base_lr, restore_model=True):
   '''训练模型'''
   size = int(base_dir.split('/')[-1])
   if size == 12:
@@ -115,11 +115,16 @@ def train(net_factory, prefix, end_epoch, base_dir, display, base_lr):
   sess = tf.Session()
 
   saver = tf.train.Saver(max_to_keep=5)
-#   sess.run(init)  #TODO: this is the orginal file
-#   following is added by sherk: restore the model 
-  model_path = os.path.join('model', net)
-  model_file = tf.train.latest_checkpoint(model_path)
-  saver.restore(sess, model_file)
+  # following is added by sherk: restore the model
+  if restore_model:
+    model_path = os.path.join('model', net)
+    model_file = tf.train.latest_checkpoint(model_path)
+    # There are 2 ways for the session to load the model
+    # restore from check point
+    saver.restore(sess, model_file)
+  else:
+    # Initialize the model
+    sess.run(init)
   #模型的graph
   writer = tf.summary.FileWriter(logs_dir, sess.graph)
   coord = tf.train.Coordinator()
@@ -182,7 +187,8 @@ def optimize(base_lr, loss, data_num):
          for x in range(0, len(FLAGS.LR_EPOCH) + 1)]
   lr_op = tf.train.piecewise_constant(global_step, boundaries, lr_values)
   # optimizer = tf.train.MomentumOptimizer(lr_op, 0.9)
-  optimizer = tf.train.GradientDescentOptimizer(lr_op)  # using SGD for fine tuning
+  optimizer = tf.train.AdamOptimizer(lr_op, 0.9)  # use Adam for training from scratch
+  # optimizer = tf.train.GradientDescentOptimizer(lr_op)  # using SGD for fine tuning
   train_op = optimizer.minimize(loss, global_step)
   return train_op, lr_op
 

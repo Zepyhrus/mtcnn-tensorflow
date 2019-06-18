@@ -12,14 +12,17 @@ batch_size = 384
 #学习率减少的迭代次数
 LR_EPOCH = [6, 14, 20]
 #最小脸大小设定
-min_face = 24  #TODO: original 20
+min_face = 20  #TODO: original 20
 
 #生成hard_example的batch
 batches = [2048, 256, 16]
 #pent对图像缩小倍数
 stride = 2
-#三个网络的阈值
-thresh = [0.6, 0.7, 0.8]  # TODO: the threshold of onet could be higher
+# 三个网络的阈值
+thresh = [0.6, 0.7, 0.7]  # TODO: the threshold of onet could be higher
+
+# scale_factor
+scale_factor = 0.709
 #最后测试选择的网络
 test_mode = 'ONet'
 #选用图片还是摄像头,1是图像，2是摄像头

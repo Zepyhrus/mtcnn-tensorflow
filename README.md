@@ -23,6 +23,18 @@ All models are derived from folder `train_models`. Generally
 * train_xxnet.py:
 	- Train the 3 networks separately;
 
+1. MtcnnDetector.py
+* nms_ratio
+there are 5 nms ratio used in MTCNN:
+  * NMS during every feature pyramid, PNet, 0.5 for original;
+  * NMS after feature pyramid, PNet, 0.5 for original;
+  * NMS after feature pyramid, RNet, 0.6 for original;
+  * NMS on boxes after the output of RNet, 0.6 for original;
+  * NMS on calibrated boxes after the output of RNet, 0.6 for original;
+
+
+
+*** TODEL
 1. MTCNN_config.py:
 * BATCH_SIZE = 384 
 * CLS_OHEM = True
@@ -31,6 +43,10 @@ All models are derived from folder `train_models`. Generally
 * BBOX_OHEM_RATIO = 0.7
 * EPS = 1e-14
 * LR_EPOCH = [6,14,20]
+***
+
+
+
 
 2. mtcnn_model.py:
 All the net_factory (including P_Net/R_Net/O_Net) comes from this file
@@ -159,7 +175,13 @@ All detectors are derived from folder `detection`. Generally:
 
 
 ## Validation
-1. val_onet.py: Take inputs and validat the landmark training datasets
+1. Total faces: 1683;
+2. Recognized: 1550;
+3. Missing: 180 faces, recall: 89.3%;
+4. False Detection: 47, accuracy: 97.0%;
+
+
+1. val_utils.py: all those utils used during the validate period;
 
 
 ## test
@@ -167,8 +189,44 @@ All detectors are derived from folder `detection`. Generally:
 
 
 ## Result
+### Original 
+1. Original
+  * threshold: [0.6, 0.7, 0.7]
+  * min_face_size: 20;
+  * scale_factor: 0.709;
+  * stride: 2;
+  * end_epoch = [30, 22, 22];
+  * 
+2. PNet training samples:
+  * pos/part/neg/landmark: 465/1145/1065/594
 
-**Result on FDDB**
+### Test on 0616
+1. Test group 1: 
+  * Net: RNet + NMS-0.6;
+  * threshold: [0.5, 0.6, 0.9];
+  * min_face_size: 24;
+  * scale_factor: 0.909;
+  * nms_ratio: 0.6;
+2. Test group 2:
+  * Net: ONet;
+  * threshold: [0.5, 0.6, 0.9]
+  * min_face_size: 24;
+  * scale_factor: 0.909;
+3. Test group 3:
+  * Net: ONet;
+  * threshold: [0.5, 0.6, 0.8]
+  * min_face_size: 24;
+  * scale_factor: 0.909;
+
+#### Conclusion
+* RNet: 11 missing;
+* ONet-0.8: 117 missing;
+* ONet-0.9: 170 missing;
+* ONet is not trained;
+* ONet: 
+  * pos/part/neg/landmark: 54/67/273/595;
+  * pos is too few;
+  * part is too few;
 
 ## License
 MIT LICENSE
