@@ -1,6 +1,0 @@
-model_checkpoint_path: "RNet-12"
-all_model_checkpoint_paths: "RNet-8"
-all_model_checkpoint_paths: "RNet-9"
-all_model_checkpoint_paths: "RNet-10"
-all_model_checkpoint_paths: "RNet-11"
-all_model_checkpoint_paths: "RNet-12"
