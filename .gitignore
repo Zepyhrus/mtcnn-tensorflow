@@ -1,4 +1,7 @@
 .vscode
-preprocess/__pycache__
+
+
+graph
+model
 
 *.py[cod]

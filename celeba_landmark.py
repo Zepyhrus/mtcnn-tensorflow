@@ -24,8 +24,22 @@ from preprocess.utils import mkdir
 import time
 
 
-#%% read celeba data
-# bounding boxes calibration for celeba dataset
+
+#%% 
+def in_box(landmark, bbox):
+  """
+  check if the landmark is in the box
+  """
+  assert landmark.shape == (10,), 'error landmark shape'
+  assert bbox.shape[0] >= 4, 'error bbox shape'
+
+  xs = landmark.reshape(-1, 2)[:, 0]
+  ys = landmark.reshape(-1, 2)[:, 1]
+
+  return True if ((xs > bbox[0]).all() & (xs < bbox[2]).all()) &\
+      ((ys > bbox[1]).all() & (ys < bbox[3]).all()) else False
+
+#%% bounding boxes calibration for celeba dataset
 bboxes_file = 'data/Anno/list_bbox_celeba.txt'
 landmarks_file = 'data/Anno/list_landmarks_celeba.txt'
 
@@ -36,6 +50,45 @@ bboxes = pd.read_csv(bboxes_file, delim_whitespace=True, skiprows=1)
 landmarks = pd.read_csv(landmarks_file, delim_whitespace=True, skiprows=1)
 
 sub_labels = bboxes.merge(landmarks)
+
+sub_labels = sub_labels[(sub_labels.width > 24) & (sub_labels.height > 24)]
+
+sub_labels.iloc[:, 1:] = sub_labels.iloc[:, 1:].astype(np.int)
+#%%
+with open('data/trainImageList_all_celeba.txt', 'w') as f:
+  for i in tqdm(range(sub_labels.shape[0])):
+    filename = join('Img', 'img_celeba', sub_labels.image_id.iloc[i])
+    landmark = sub_labels.iloc[i, -10:].values
+    box = sub_labels.iloc[i, 1:5].values
+    box[2:] = box[:2] + box[2:]
+
+
+
+    if in_box(landmark, box):
+      box = [str(x) for x in box]
+      landmark = [str(x) for x in landmark]
+      
+      f.write(' '.join([filename] + box + landmark) + '\n')
+    else:
+      img = cv2.imread(join('data', filename))
+
+      cv2.rectangle(img, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 2)
+      for j in range(5):
+        cv2.circle(img, (landmark[2*j], landmark[2*j+1]), 0, (0, 0, 255), 2)
+
+      cv2.imwrite(join('output', sub_labels.image_id.iloc[i]), img)
+
+
+
+
+
+
+
+
+
+
+
+
 
 #%% model initialize
 # test_mode = config.test_mode

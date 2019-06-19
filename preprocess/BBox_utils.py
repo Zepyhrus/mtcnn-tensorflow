@@ -50,8 +50,8 @@ def getDataFromTxt(txt, data_path, with_landmark=True):
         img_path = os.path.join(data_path, components[0]).replace('\\','/') # file path
 
         # bounding box, (x1, y1, x2, y2)
-        #bbox = (components[1], components[2], components[3], components[4])
-        bbox = (components[1], components[3], components[2], components[4])        
+        bbox = (components[1], components[2], components[3], components[4])
+        # bbox = (components[1], components[2], components[3], components[4])        
         bbox = [float(_) for _ in bbox]
         bbox = list(map(int,bbox))
         # landmark
