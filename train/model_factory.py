@@ -156,15 +156,13 @@ def O_Net(inputs, label=None, bbox_target=None, landmark_target=None, training=T
 
 
 # In[2]:
-
-
 def prelu(inputs):
   '''prelu函数定义'''
   alphas = tf.get_variable('alphas', shape=inputs.get_shape()[-1], dtype=tf.float32,
                initializer=tf.constant_initializer(0.25))
   pos = tf.nn.relu(inputs)
   neg = alphas*(inputs-abs(inputs))*0.5
-  return pos+neg
+  return pos + neg
 
 
 # In[3]:
