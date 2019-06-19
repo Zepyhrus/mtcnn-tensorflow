@@ -40,15 +40,15 @@ with open(os.path.join(dir_path, 'train_pnet_landmark.txt'), 'w') as f:
   
   #TODO: The random choice process is modified from replace=True to replace=False
   if len(neg) > base_num*3:
-    neg_keep = npr.choice(len(neg), size=base_num*3, replace=False)
+    neg_keep = npr.choice(len(neg), size=base_num*3)
   else:
-    neg_keep = npr.choice(len(neg), size=len(neg), replace=False)
+    neg_keep = npr.choice(len(neg), size=len(neg))
   sum_p = len(neg_keep)//3
-  pos_keep = npr.choice(len(pos), sum_p, replace=False)
-  part_keep = npr.choice(len(part), sum_p, replace=False)
+  pos_keep = npr.choice(len(pos), sum_p)
+  part_keep = npr.choice(len(part), sum_p)
   #TODO: Landmark keep? After celeba data is added, the landmarks are way much more 
   #     than the other images
-  landmark_keep = random.sample(landmark, sum_p)
+  landmark_keep = random.sample(landmark, min(sum_p, len(landmark)))
   print('neg数量：{} pos数量：{} part数量:{} landmark:{}'.format(
       len(neg_keep), len(pos_keep), len(part_keep), len(landmark_keep)))
   for i in pos_keep:
@@ -57,6 +57,6 @@ with open(os.path.join(dir_path, 'train_pnet_landmark.txt'), 'w') as f:
     f.write(neg[i])
   for i in part_keep:
     f.write(part[i])
-  
+
   for item in landmark_keep:
     f.write(item)
