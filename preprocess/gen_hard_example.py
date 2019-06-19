@@ -31,6 +31,7 @@ def main(args):
   min_face_size = config.min_face
   stride = config.stride
   thresh = config.thresh
+  scale_factor = config.scale_factor
   #模型地址
   model_path = ['model/PNet/', 'model/RNet/', 'model/ONet']
   if size == 12:
@@ -55,7 +56,6 @@ def main(args):
   if net == 'RNet':
     RNet = Detector(R_Net, 24, batch_size[1], model_path[1])
     detectors[1] = RNet
-  # basedir = 'data/' # acutally this line is not used
   filename = 'data/wider_face_train_celeba.txt'
   # 读取文件的image和box对应函数在utils中
   data = read_anno(base_dir, filename)
@@ -126,8 +126,8 @@ def save_hard_example(save_size, data, neg_dir, pos_dir, part_dir, detectors):
       width = x_right - x_left + 1
       height = y_bottom - y_top + 1
 
-      # 移除过小的
-      if width < 20 or x_left < 0 or y_top < 0 or x_right > img.shape[1] - 1 or y_bottom > img.shape[0] - 1:
+      # 除去过小的
+      if width < 24 or x_left < 0 or y_top < 0 or x_right > img.shape[1] - 1 or y_bottom > img.shape[0] - 1:
         continue
 
       Iou = iou(box, gts)

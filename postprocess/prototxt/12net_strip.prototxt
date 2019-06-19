@@ -1,0 +1,342 @@
+name: "12Net"
+layer {
+  name: "data12"
+  type: "HDF5Data"
+  top: "label12face"
+  top: "data12face"
+  include {
+    phase: TRAIN
+  }
+  phase: TRAIN
+  hdf5_data_param {
+    source: "/home_sdb/kpzhang/WIDER07/data12-face4/train-12rgb.txt"
+    batch_size: 2000
+  }
+}
+layer {
+  name: "slicer_label"
+  type: "Slice"
+  bottom: "label12face"
+  top: "label1"
+  top: "label2"
+  top: "label3"
+  phase: TRAIN
+  slice_param {
+    slice_point: 1
+    slice_point: 5
+    axis: 1
+  }
+}
+layer {
+  name: "label1_slicer_label_0_split"
+  type: "Split"
+  bottom: "label1"
+  top: "label1_slicer_label_0_split_0"
+  top: "label1_slicer_label_0_split_1"
+  phase: TRAIN
+}
+layer {
+  name: "silence"
+  type: "Silence"
+  bottom: "label3"
+  phase: TRAIN
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data12face"
+  top: "conv1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  blobs {
+    shape {
+      dim: 10
+      dim: 3
+      dim: 3
+      dim: 3
+    }
+  }
+  blobs {
+    shape {
+      dim: 10
+    }
+  }
+  phase: TRAIN
+  convolution_param {
+    num_output: 10
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "PReLU1"
+  type: "PReLU"
+  bottom: "conv1"
+  top: "conv1"
+  blobs {
+    shape {
+      dim: 10
+    }
+  }
+  phase: TRAIN
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  phase: TRAIN
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  blobs {
+    shape {
+      dim: 16
+      dim: 10
+      dim: 3
+      dim: 3
+    }
+  }
+  blobs {
+    shape {
+      dim: 16
+    }
+  }
+  phase: TRAIN
+  convolution_param {
+    num_output: 16
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "PReLU2"
+  type: "PReLU"
+  bottom: "conv2"
+  top: "conv2"
+  blobs {
+    shape {
+      dim: 16
+    }
+  }
+  phase: TRAIN
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "conv2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  blobs {
+    shape {
+      dim: 32
+      dim: 16
+      dim: 3
+      dim: 3
+    }
+  }
+  blobs {
+    shape {
+      dim: 32
+    }
+  }
+  phase: TRAIN
+  convolution_param {
+    num_output: 32
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "PReLU3"
+  type: "PReLU"
+  bottom: "conv3"
+  top: "conv3"
+  blobs {
+    shape {
+      dim: 32
+    }
+  }
+  phase: TRAIN
+}
+layer {
+  name: "conv3_PReLU3_0_split"
+  type: "Split"
+  bottom: "conv3"
+  top: "conv3_PReLU3_0_split_0"
+  top: "conv3_PReLU3_0_split_1"
+  phase: TRAIN
+}
+layer {
+  name: "conv4-1"
+  type: "Convolution"
+  bottom: "conv3_PReLU3_0_split_0"
+  top: "conv4-1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  blobs {
+    shape {
+      dim: 2
+      dim: 32
+      dim: 1
+      dim: 1
+    }
+  }
+  blobs {
+    shape {
+      dim: 2
+    }
+  }
+  phase: TRAIN
+  convolution_param {
+    num_output: 2
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "conv4-1_conv4-1_0_split"
+  type: "Split"
+  bottom: "conv4-1"
+  top: "conv4-1_conv4-1_0_split_0"
+  top: "conv4-1_conv4-1_0_split_1"
+  phase: TRAIN
+}
+layer {
+  name: "conv4-2"
+  type: "Convolution"
+  bottom: "conv3_PReLU3_0_split_1"
+  top: "conv4-2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  blobs {
+    shape {
+      dim: 4
+      dim: 32
+      dim: 1
+      dim: 1
+    }
+  }
+  blobs {
+    shape {
+      dim: 4
+    }
+  }
+  phase: TRAIN
+  convolution_param {
+    num_output: 4
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "loss1"
+  type: "SoftmaxWithLoss"
+  bottom: "conv4-1_conv4-1_0_split_0"
+  bottom: "label1_slicer_label_0_split_0"
+  top: "loss1"
+  loss_weight: 1
+  phase: TRAIN
+  loss_param {
+    ignore_label: 2
+  }
+  softmax_param {
+    3: 0x3e800000
+  }
+}
+layer {
+  name: "loss2"
+  type: "EuclideanLoss"
+  bottom: "conv4-2"
+  bottom: "label2"
+  top: "loss2"
+  loss_weight: 1
+  phase: TRAIN
+}
+layer {
+  name: "accuracy1"
+  type: "Accuracy"
+  bottom: "conv4-1_conv4-1_0_split_1"
+  bottom: "label1_slicer_label_0_split_1"
+  top: "accuracy1"
+  phase: TRAIN
+  accuracy_param {
+    ignore_label: 2
+  }
+}

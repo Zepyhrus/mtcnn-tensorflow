@@ -1,0 +1,443 @@
+name: "24Net"
+layer {
+  name: "data24"
+  type: "HDF5Data"
+  top: "label24"
+  top: "data24"
+  include {
+    phase: TRAIN
+  }
+  phase: TRAIN
+  hdf5_data_param {
+    source: "/home_sdb/kpzhang/wider/data24-hnm8/train-24rgb.txt"
+    batch_size: 420
+  }
+}
+layer {
+  name: "slicer_label"
+  type: "Slice"
+  bottom: "label24"
+  top: "label1"
+  top: "label2"
+  top: "label3"
+  phase: TRAIN
+  slice_param {
+    slice_point: 1
+    slice_point: 5
+    axis: 1
+  }
+}
+layer {
+  name: "label1_slicer_label_0_split"
+  type: "Split"
+  bottom: "label1"
+  top: "label1_slicer_label_0_split_0"
+  top: "label1_slicer_label_0_split_1"
+  phase: TRAIN
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data24"
+  top: "conv1"
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  blobs {
+    shape {
+      dim: 28
+      dim: 3
+      dim: 3
+      dim: 3
+    }
+  }
+  blobs {
+    shape {
+      dim: 28
+    }
+  }
+  phase: TRAIN
+  convolution_param {
+    num_output: 28
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "prelu1"
+  type: "PReLU"
+  bottom: "conv1"
+  top: "conv1"
+  blobs {
+    shape {
+      dim: 28
+    }
+  }
+  phase: TRAIN
+  propagate_down: false
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  phase: TRAIN
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  blobs {
+    shape {
+      dim: 48
+      dim: 28
+      dim: 3
+      dim: 3
+    }
+  }
+  blobs {
+    shape {
+      dim: 48
+    }
+  }
+  phase: TRAIN
+  convolution_param {
+    num_output: 48
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "prelu2"
+  type: "PReLU"
+  bottom: "conv2"
+  top: "conv2"
+  blobs {
+    shape {
+      dim: 48
+    }
+  }
+  phase: TRAIN
+  propagate_down: false
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  phase: TRAIN
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  blobs {
+    shape {
+      dim: 64
+      dim: 48
+      dim: 2
+      dim: 2
+    }
+  }
+  blobs {
+    shape {
+      dim: 64
+    }
+  }
+  phase: TRAIN
+  convolution_param {
+    num_output: 64
+    kernel_size: 2
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "prelu3"
+  type: "PReLU"
+  bottom: "conv3"
+  top: "conv3"
+  blobs {
+    shape {
+      dim: 64
+    }
+  }
+  phase: TRAIN
+  propagate_down: false
+}
+layer {
+  name: "conv4"
+  type: "InnerProduct"
+  bottom: "conv3"
+  top: "conv4"
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  blobs {
+    shape {
+      dim: 128
+      dim: 576
+    }
+  }
+  blobs {
+    shape {
+      dim: 128
+    }
+  }
+  phase: TRAIN
+  inner_product_param {
+    num_output: 128
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "prelu4"
+  type: "PReLU"
+  bottom: "conv4"
+  top: "conv4"
+  blobs {
+    shape {
+      dim: 128
+    }
+  }
+  phase: TRAIN
+  propagate_down: false
+}
+layer {
+  name: "conv4_prelu4_0_split"
+  type: "Split"
+  bottom: "conv4"
+  top: "conv4_prelu4_0_split_0"
+  top: "conv4_prelu4_0_split_1"
+  top: "conv4_prelu4_0_split_2"
+  phase: TRAIN
+}
+layer {
+  name: "conv5-1"
+  type: "InnerProduct"
+  bottom: "conv4_prelu4_0_split_0"
+  top: "conv5-1"
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  blobs {
+    shape {
+      dim: 2
+      dim: 128
+    }
+  }
+  blobs {
+    shape {
+      dim: 2
+    }
+  }
+  phase: TRAIN
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "conv5-1_conv5-1_0_split"
+  type: "Split"
+  bottom: "conv5-1"
+  top: "conv5-1_conv5-1_0_split_0"
+  top: "conv5-1_conv5-1_0_split_1"
+  phase: TRAIN
+}
+layer {
+  name: "conv5-2"
+  type: "InnerProduct"
+  bottom: "conv4_prelu4_0_split_1"
+  top: "conv5-2"
+  param {
+    lr_mult: 1e+17
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2e+17
+    decay_mult: 1
+  }
+  blobs {
+    shape {
+      dim: 4
+      dim: 128
+    }
+  }
+  blobs {
+    shape {
+      dim: 4
+    }
+  }
+  phase: TRAIN
+  inner_product_param {
+    num_output: 4
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "conv5-3"
+  type: "InnerProduct"
+  bottom: "conv4_prelu4_0_split_2"
+  top: "conv5-3"
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 1
+  }
+  blobs {
+    shape {
+      dim: 10
+      dim: 128
+    }
+  }
+  blobs {
+    shape {
+      dim: 10
+    }
+  }
+  phase: TRAIN
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "loss3"
+  type: "EuclideanLoss"
+  bottom: "conv5-3"
+  bottom: "label3"
+  top: "loss3"
+  loss_weight: 0
+  phase: TRAIN
+  loss_param {
+    normalization: FULL
+    4: 10
+  }
+}
+layer {
+  name: "loss2"
+  type: "EuclideanLoss"
+  bottom: "conv5-2"
+  bottom: "label2"
+  top: "loss2"
+  loss_weight: 1
+  phase: TRAIN
+  loss_param {
+    normalization: FULL
+    4: 4
+  }
+}
+layer {
+  name: "loss1"
+  type: "SoftmaxWithLoss"
+  bottom: "conv5-1_conv5-1_0_split_0"
+  bottom: "label1_slicer_label_0_split_0"
+  top: "loss1"
+  loss_weight: 0
+  phase: TRAIN
+  loss_param {
+    ignore_label: 2
+  }
+}
+layer {
+  name: "accuracy1"
+  type: "Accuracy"
+  bottom: "conv5-1_conv5-1_0_split_1"
+  bottom: "label1_slicer_label_0_split_1"
+  top: "accuracy1"
+  phase: TRAIN
+  accuracy_param {
+    ignore_label: 2
+  }
+}

@@ -62,13 +62,13 @@ def py_nms(dets, thresh):
 
 class MtcnnDetector:
     '''来生成人脸的图像'''
-
+    # Added by sherk, do NOT use default input here
+    #   Explicit use the input to keep parameters consistancy
     def __init__(self, detectors,
-                 min_face_size=20,
-                 stride=2,
-                 threshold=[0.6, 0.7, 0.8],  # this is define from config.py, original [0.6, 0.7, 0.7]
-                 scale_factor=0.909,  #TODO: 图像金字塔的缩小率, original 0.709
-                 nms_ratio=0.4
+                 min_face_size,
+                 stride,
+                 threshold,  #TODO: this is define from config.py, original [0.6, 0.7, 0.7]
+                 scale_factor,  #TODO: 图像金字塔的缩小率, original 0.709
                  ):
         self.pnet_detector = detectors[0]
         self.rnet_detector = detectors[1]
@@ -77,7 +77,6 @@ class MtcnnDetector:
         self.stride = stride
         self.thresh = threshold
         self.scale_factor = scale_factor
-        self.nms_ratio = nms_ratio
 
     def detect_face(self, test_data):
         """
@@ -154,7 +153,7 @@ class MtcnnDetector:
             return None, None, None
         all_boxes = np.vstack(all_boxes)
         #将金字塔之后的box也进行非极大值抑制
-        keep = py_nms(all_boxes[:, 0:5], 0.5)  #TODO: original nms 0.7
+        keep = py_nms(all_boxes[:, 0:5], 0.7)  #TODO: original nms 0.7
         all_boxes = all_boxes[keep]
         boxes = all_boxes[:, :5]
         #box的长宽
@@ -208,7 +207,7 @@ class MtcnnDetector:
         else:
             return None, None, None
 
-        keep = py_nms(boxes, 0.5)  #TODO: original 0.6
+        keep = py_nms(boxes, 0.6)  #TODO: original 0.6
         boxes = boxes[keep]
         #对pnet截取的图像的坐标进行校准，生成rnet的人脸框对于原图的绝对坐标
         boxes_c = self.calibrate_box(boxes, reg[keep])
@@ -249,8 +248,8 @@ class MtcnnDetector:
             np.tile(h, (5, 1)) * landmark[:, 1::2].T + np.tile(boxes[:, 1], (5, 1)) - 1).T
         boxes_c = self.calibrate_box(boxes, reg)
 
-        boxes = boxes[py_nms(boxes, 0.4)]  # original .6
-        keep = py_nms(boxes_c, 0.4)  # origianl .6
+        boxes = boxes[py_nms(boxes, 0.6)]  # original .6
+        keep = py_nms(boxes_c, 0.6)  # origianl .6
         boxes_c = boxes_c[keep]
         landmark = landmark[keep]
         return boxes, boxes_c, landmark
@@ -395,7 +394,7 @@ class MtcnnDetector:
       """
       boxes_c, landmarks = self.detect(img)
       if boxes_c.shape[0]:
-        keep = py_nms(boxes_c, self.nms_ratio)
+        keep = py_nms(boxes_c, 0.6)
 
         boxes_c = boxes_c[keep]
         if landmarks is not None:

@@ -1,0 +1,11 @@
+name: "24Net"
+input: "data"
+input_dim: 1
+input_dim: 3
+input_dim: 24
+input_dim: 24
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
