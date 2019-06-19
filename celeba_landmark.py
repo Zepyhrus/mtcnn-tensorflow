@@ -50,6 +50,8 @@ landmarks = pd.read_csv(landmarks_file, delim_whitespace=True, skiprows=1)
 
 sub_labels = bboxes.merge(landmarks)
 
+sub_labels = sub_labels[(sub_labels.width > 24) & (sub_labels.height > 24)]
+
 sub_labels.iloc[:, 1:] = sub_labels.iloc[:, 1:].astype(np.int)
 #%%
 with open('data/trainImageList_all_celeba.txt', 'w') as f:
@@ -64,7 +66,6 @@ with open('data/trainImageList_all_celeba.txt', 'w') as f:
     if in_box(landmark, box):
       box = [str(x) for x in box]
       landmark = [str(x) for x in landmark]
-
       
       f.write(' '.join([filename] + box + landmark) + '\n')
     else:
