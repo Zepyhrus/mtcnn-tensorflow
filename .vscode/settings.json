@@ -1,7 +1,6 @@
 {
   "explorer.confirmDelete": false,
   "window.zoomLevel": 0,
-  "cmake.configureOnOpen": true,
   "explorer.confirmDragAndDrop": false,
   "editor.minimap.enabled": false,
   "editor.tabSize": 2,
@@ -18,7 +17,7 @@
     "**/*.tiff": true,
     "**/*.ckpt": true,
     "**/*.meta": true,
-    "**/*.pyc": true,
+    "**/*.py[cod]": true,
     "**/*.xml": true,
     // "**/data/**": true,
     // "**/error/**": true,
@@ -31,5 +30,5 @@
     "**/error/**": true,
     "**/anno/**": true
   },
-  "python.pythonPath": "/home/sherk/anaconda3/envs/tensorflow-gpu/bin/python"
+  "python.pythonPath": "/home/ubuntu/anaconda3/envs/tensorflow-gpu/bin/python"
 }
