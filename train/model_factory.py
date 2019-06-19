@@ -126,7 +126,7 @@ def O_Net(inputs, label=None, bbox_target=None, landmark_target=None, training=T
             net = slim.conv2d(net, 128, 2, scope='conv4')
             fc_flatten = slim.flatten(net)
             fc1 = slim.fully_connected(
-                fc_flatten, num_outputs=256, scope='fc1')
+                fc_flatten, num_outputs=256, scope='fc1')  
 
             cls_prob = slim.fully_connected(
                 fc1, num_outputs=2, activation_fn=tf.nn.softmax, scope='cls_fc')
