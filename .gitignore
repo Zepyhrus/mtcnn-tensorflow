@@ -1,0 +1,4 @@
+.vscode
+preprocess/__pycache__
+
+*.py[cod]

@@ -1,5 +1,5 @@
 # training pnet
-python preprocess/gen_12net_data.py
+python preprocess/gen_init_images.py
 python preprocess/gen_landmark_aug.py 12
 python preprocess/gen_imglist_pnet.py
 python preprocess/gen_tfrecords.py 12

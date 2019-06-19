@@ -44,7 +44,7 @@ def main(args):
   if not os.path.exists(dstdir):
     os.makedirs(dstdir)
   #label记录txt
-  ftxt = os.path.join(data_dir, 'trainImageList_combined.txt')
+  ftxt = os.path.join(data_dir, 'trainImageList_all_celeba.txt')
   #记录label的txt
   f = open(os.path.join(OUTPUT, 'landmark_%d_aug.txt' % (size)), 'w')
   #获取图像路径，box，关键点
@@ -84,6 +84,7 @@ def main(args):
       #除去过小图像
       if max(gt_w, gt_h) < 40 or x1 < 0 or y1 < 0:
         continue
+
       for i in range(10):
         #随机裁剪图像大小
         box_size = npr.randint(

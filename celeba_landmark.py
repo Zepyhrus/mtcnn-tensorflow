@@ -25,7 +25,7 @@ import time
 
 
 #%% read celeba data
-#%% bounding boxes calibration for celeba dataset
+# bounding boxes calibration for celeba dataset
 bboxes_file = 'data/Anno/list_bbox_celeba.txt'
 landmarks_file = 'data/Anno/list_landmarks_celeba.txt'
 
