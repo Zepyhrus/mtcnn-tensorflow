@@ -218,15 +218,31 @@ All detectors are derived from folder `detection`. Generally:
   * min_face_size: 24;
   * scale_factor: 0.909;
 
+### Test on 0620
+3. Test group 4:
+  * Net: ONet;
+  * threshold: [0.6, 0.7, 0.7]
+  * min_face_size: 24;
+  * scale_factor: 0.709;
+
 #### Conclusion
+2. Total 1777 faces;
+3. Group 3:
 * RNet: 11 missing;
-* ONet-0.8: 117 missing;
-* ONet-0.9: 170 missing;
-* ONet is not trained;
+* ONet-0.8: 180 missing, 47 false detection;
+* ONet-0.8: Precision: 89.9%, recall: 97.4%;
+* ONet is not well trained;
 * ONet: 
   * pos/part/neg/landmark: 54/67/273/595;
   * pos is too few;
   * part is too few;
+4. Group 4:
+* around 11k single face image from Celeba added into WIDER FACE;
+* Using Celeba dataset for landmark;
+* ONet-0.8: 52 missing, 41 false detection;
+* Precision: 97.1%, recall: 97.7%;
+* ONet: 
+  * pos/part/neg/landmark: 138/68/110/201;
 
 ## License
 MIT LICENSE

@@ -1,4 +1,5 @@
 import numpy as np
+import numpy.random as npr
 import os
 from os.path import join
 
@@ -128,3 +129,54 @@ def read_anno(base_dir, label_path):
   data['bboxes'] = bboxes
   
   return data
+
+#%%
+def _pick_2(x1, x2, xu, thresh):
+  """
+  0----x_lower----x1----x2----x_upper----xu
+    pick 2 numbers according to the threshold
+  """
+  assert x1 < x2 <= xu, 'Error input sequency'
+
+  x_lower = int(max(x2 - (x2 - x1) * np.sqrt(1 + thresh), 0))
+  x_upper = int(min(x1 + (x2 - x1) * np.sqrt(1 + thresh), xu))
+
+  ok = 0
+  ctrl = 0
+  while not ok:
+    lower, upper = npr.randint(x_lower, x_upper, 2)
+    if np.abs(upper - lower) >= 24:
+      ok = 1
+    
+    ctrl += 1
+    if ctrl > 1000:
+      raise Exception('Infinite loop...')
+
+  return min(lower, upper), max(lower, upper)
+
+
+def pick_boxes(boxes_filtered, img_shape, iou_thresh, cnt):
+  """
+    pick cnt boxes beyond iou_thresh from boxes_filtered
+  """
+  box_set = []
+  ctrl = 0
+
+  while cnt:
+    box_target = boxes_filtered[npr.randint(boxes_filtered.shape[0]), :]
+    ok = 0
+
+    while not ok:
+      x1, x2 = _pick_2(box_target[0], box_target[2], img_shape[1], iou_thresh)
+      y1, y2 = _pick_2(box_target[1], box_target[3], img_shape[0], iou_thresh)
+
+      if iou((x1, y1, x2, y2), box_target.reshape(-1, 4)) > iou_thresh:
+        box_set.append([x1, y1, x2, y2])
+        ok = 1
+        cnt -= 1
+      
+      ctrl += 1
+      if ctrl > 1000:
+        raise Exception('Infinite loop...')
+
+  return box_set
