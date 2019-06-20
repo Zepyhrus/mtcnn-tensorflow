@@ -100,9 +100,9 @@ part_file = open(part_label_file, 'w')
 
 assert len(det_boxes) == len(im_idx_list), "bboxes length equals not images"
 
-neg_list = []
-pos_list = []
-part_list = []
+n_idx = 0
+p_idx = 0
+d_idx = 0
 
 n_idx = 0
 p_idx = 0
@@ -112,9 +112,6 @@ for im_idx, dets, gts in tqdm(zip(im_idx_list, det_boxes, gt_boxes_list)):
   gts = np.array(gts, dtype=np.float32).reshape(-1, 4)
 
   if dets.shape[0] == 0:
-    neg_list.append(0)
-    pos_list.append(0)
-    part_list.append(0)
     continue
 
   img = cv2.imread(im_idx)
@@ -176,13 +173,14 @@ for im_idx, dets, gts in tqdm(zip(im_idx_list, det_boxes, gt_boxes_list)):
         cv2.imwrite(save_file, resized_im)
         part_num += 1
         d_idx += 1
-
-  neg_list.append(neg_num)
-  pos_list.append(pos_num)
-  part_list.append(part_num)
-
 neg_file.close()
 part_file.close()
 pos_file.close()
 
+print('%d positive generated...' % p_idx)
+print('%d part generated...' % d_idx)
+print('%d negative generated...' % n_idx)
+
+print('Generating hard example for %s finished...' % net)
+print(['='*82])
 #%%

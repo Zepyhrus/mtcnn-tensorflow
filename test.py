@@ -25,11 +25,12 @@ from tqdm import tqdm
 # In[ ]:
 # test_mode = config.test_mode
 test_mode = 'ONet'
-thresh = [0.5, 0.6, 0.8]
+thresh = [0.6, 0.7, 0.8]
 min_face_size = 24
 stride = 2
 detectors = [None, None, None]
-scale_factor = 0.909
+
+scale_factor = 0.709
 
 # 模型放置位置
 model_path = ['model/PNet/', 'model/RNet/', 'model/ONet']
