@@ -1,9 +1,9 @@
 # training pnet
-# python preprocess/gen_init_images.py
-# python preprocess/gen_landmark_aug.py 12
-# python preprocess/gen_imglist_pnet.py
-# python preprocess/gen_tfrecords.py 12
-# python train/train_models.py 12
+python preprocess/gen_init_images.py
+python preprocess/gen_landmark_aug.py 12
+python preprocess/gen_imglist_pnet.py
+python preprocess/gen_tfrecords.py 12
+python train/train_models.py 12
 
 # training onet
 python preprocess/gen_hard_example2.py 12

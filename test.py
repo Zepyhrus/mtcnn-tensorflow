@@ -25,12 +25,12 @@ from tqdm import tqdm
 # In[ ]:
 # test_mode = config.test_mode
 test_mode = 'ONet'
-thresh = [0.5, 0.6, 0.8]
+thresh = [0.6, 0.7, 0.8]
 min_face_size = 24
 stride = 2
 detectors = [None, None, None]
-scale_factor = 0.909
-nms_ratio = 0.6
+scale_factor = 0.709
+
 # 模型放置位置
 model_path = ['model/PNet/', 'model/RNet/', 'model/ONet']
 batch_size = config.batches
@@ -48,8 +48,8 @@ mtcnn_detector = MtcnnDetector(
   min_face_size=min_face_size,
   stride=stride,
   threshold=thresh,
-  scale_factor=scale_factor,
-  nms_ratio=nms_ratio)
+  scale_factor=scale_factor)
+
 out_path = join('validate', test_mode) + '/'
 
 if config.input_mode == '1':
