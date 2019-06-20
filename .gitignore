@@ -5,3 +5,5 @@ model
 
 **/*.py[cod]
 */__pycache__/
+
+err.log
