@@ -125,7 +125,7 @@ def train(net_factory, prefix, end_epoch, base_dir, display, base_lr, restore_mo
   else:
     # Initialize the model
     sess.run(init)
-  #模型的graph
+  # 模型的graph
   writer = tf.summary.FileWriter(logs_dir, sess.graph)
   coord = tf.train.Coordinator()
   threads = tf.train.start_queue_runners(sess=sess, coord=coord)
@@ -135,7 +135,6 @@ def train(net_factory, prefix, end_epoch, base_dir, display, base_lr, restore_mo
   epoch = 0
   sess.graph.finalize()
   try:
-
     for step in range(MAX_STEP):
       i = i + 1
       if coord.should_stop():
@@ -186,8 +185,8 @@ def optimize(base_lr, loss, data_num):
   lr_values = [base_lr * (lr_factor ** x)
          for x in range(0, len(FLAGS.LR_EPOCH) + 1)]
   lr_op = tf.train.piecewise_constant(global_step, boundaries, lr_values)
-  # optimizer = tf.train.MomentumOptimizer(lr_op, 0.9)
-  optimizer = tf.train.AdamOptimizer(lr_op, 0.8)  # use Adam for training from scratch
+  optimizer = tf.train.MomentumOptimizer(lr_op, 0.9)
+  # optimizer = tf.train.AdamOptimizer(lr_op, 0.8)  # use Adam for training from scratch
   # optimizer = tf.train.GradientDescentOptimizer(lr_op)  # using SGD for fine tuning
   train_op = optimizer.minimize(loss, global_step)
   return train_op, lr_op

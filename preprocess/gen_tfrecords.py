@@ -15,8 +15,6 @@ import argparse
 
 
 # In[ ]:
-
-
 def main(args):
   '''生成tfrecords文件'''
   size = args.input_size
@@ -26,7 +24,7 @@ def main(args):
   output_dir = os.path.join(dataset_dir, str(size)+'/tfrecord')
   if not os.path.exists(output_dir):
     os.mkdir(output_dir)
-  #pnet只生成一个混合的tfrecords，rnet和onet要分别生成4个
+  # pnet只生成一个混合的tfrecords，rnet和onet要分别生成4个
   if size == 12:
     net = 'PNet'
     tf_filenames = [os.path.join(

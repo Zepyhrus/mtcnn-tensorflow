@@ -24,6 +24,22 @@ import numpy as np
 # In[3]:
 
 
+
+
+
+# In[4]:
+
+
+def parse_arguments(argv):
+
+  parser = argparse.ArgumentParser()
+
+  parser.add_argument('input_size', type=int,
+            help='The input size for specific net')
+
+  return parser.parse_args(argv)
+
+
 def main(args):
   '''通过PNet或RNet生成下一个网络的输入'''
   size = args.input_size
@@ -59,10 +75,10 @@ def main(args):
   filename = 'data/wider_face_train_celeba.txt'
   # 读取文件的image和box对应函数在utils中
   data = read_anno(base_dir, filename)
-  mtcnn_detector = MtcnnDetector(detectors, 
-    min_face_size=min_face_size,
-    stride=stride,
-    threshold=thresh)
+  mtcnn_detector = MtcnnDetector(detectors,
+                                 min_face_size=min_face_size,
+                                 stride=stride,
+                                 threshold=thresh)
   # save_path = data_dir
   # save_file = os.path.join(save_path, 'detections.pkl')
   # if not os.path.exists(save_file):
@@ -72,9 +88,9 @@ def main(args):
   detectors, _ = mtcnn_detector.detect_face(test_data)
   print('完成识别')
 
-    # with open(save_file, 'wb') as f:
-    #     pickle.dump(detectors, f, 1)
-  
+  # with open(save_file, 'wb') as f:
+  #     pickle.dump(detectors, f, 1)
+
   print('开始生成图像')
   save_hard_example(save_size, data, neg_dir, pos_dir, part_dir, detectors)
 
@@ -133,7 +149,7 @@ def save_hard_example(save_size, data, neg_dir, pos_dir, part_dir, detectors):
       Iou = iou(box, gts)
       cropped_im = img[y_top:y_bottom + 1, x_left:x_right + 1, :]
       resized_im = cv2.resize(cropped_im, (save_size, save_size),
-                  interpolation=cv2.INTER_LINEAR)
+                              interpolation=cv2.INTER_LINEAR)
 
       #划分种类
       if np.max(Iou) < 0.3 and neg_num < 60:
@@ -159,33 +175,19 @@ def save_hard_example(save_size, data, neg_dir, pos_dir, part_dir, detectors):
         if np.max(Iou) >= 0.65:
           save_file = os.path.join(pos_dir, "%s.jpg" % p_idx)
           pos_file.write(save_file + ' 1 %.2f %.2f %.2f %.2f\n' % (
-            offset_x1, offset_y1, offset_x2, offset_y2))
+              offset_x1, offset_y1, offset_x2, offset_y2))
           cv2.imwrite(save_file, resized_im)
           p_idx += 1
 
         elif np.max(Iou) >= 0.4:
           save_file = os.path.join(part_dir, "%s.jpg" % d_idx)
           part_file.write(save_file + ' -1 %.2f %.2f %.2f %.2f\n' % (
-            offset_x1, offset_y1, offset_x2, offset_y2))
+              offset_x1, offset_y1, offset_x2, offset_y2))
           cv2.imwrite(save_file, resized_im)
           d_idx += 1
   neg_file.close()
   part_file.close()
   pos_file.close()
-
-
-# In[4]:
-
-
-def parse_arguments(argv):
-
-  parser = argparse.ArgumentParser()
-
-  parser.add_argument('input_size', type=int,
-            help='The input size for specific net')
-
-  return parser.parse_args(argv)
-
 
 if __name__ == '__main__':
   main(parse_arguments(sys.argv[1:]))
