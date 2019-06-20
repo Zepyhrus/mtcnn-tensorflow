@@ -122,7 +122,7 @@ for im_idx, dets, gts in tqdm(zip(im_idx_list, det_boxes, gt_boxes_list)):
   dets = convert_to_square(dets)
   dets[:, 0:4] = np.round(dets[:, 0:4])
 
-  
+
   neg_num = 0
   pos_num = 0
   part_num = 0

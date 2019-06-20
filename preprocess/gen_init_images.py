@@ -24,7 +24,7 @@ npr = np.random
 
 # face的id对应label的txt
 # This file contains original wider face file and another 1207 missed celeba images
-anno_file = 'data/wider_face_celeba_train.txt'
+anno_file = 'data/wider_face_train_celeba.txt'
 # 图片地址
 im_dir = 'data/WIDER_train/images'
 # pos，part,neg裁剪图片放置位置
