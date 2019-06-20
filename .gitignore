@@ -1,7 +1,7 @@
 .vscode
 
-
 graph
 model
 
-*.py[cod]
+**/*.py[cod]
+*/__pycache__/

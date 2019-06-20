@@ -117,6 +117,11 @@ for im_idx, dets, gts in tqdm(zip(im_idx_list, det_boxes, gt_boxes_list)):
   #转换成正方形
   dets = convert_to_square(dets)
   dets[:, 0:4] = np.round(dets[:, 0:4])
+
+  n_idx = 0
+  p_idx = 0
+  d_idx = 0
+
   neg_num = 0
   pos_num = 0
   part_num = 0
@@ -143,6 +148,7 @@ for im_idx, dets, gts in tqdm(zip(im_idx_list, det_boxes, gt_boxes_list)):
       neg_file.write(save_file + ' 0\n')
       cv2.imwrite(save_file, resized_im)
       neg_num += 1
+      n_idx += 1
     else:
       idx = np.argmax(Iou)
       assigned_gt = gts[idx]
@@ -161,6 +167,7 @@ for im_idx, dets, gts in tqdm(zip(im_idx_list, det_boxes, gt_boxes_list)):
             offset_x1, offset_y1, offset_x2, offset_y2))
         cv2.imwrite(save_file, resized_im)
         pos_num += 1
+        p_idx += 1
 
       elif np.max(Iou) >= 0.4 and part_num < 60:
         save_file = os.path.join(part_dir, "%s.jpg" % d_idx)
@@ -168,6 +175,7 @@ for im_idx, dets, gts in tqdm(zip(im_idx_list, det_boxes, gt_boxes_list)):
             offset_x1, offset_y1, offset_x2, offset_y2))
         cv2.imwrite(save_file, resized_im)
         part_num += 1
+        d_idx += 1
 
   neg_list.append(neg_num)
   pos_list.append(pos_num)

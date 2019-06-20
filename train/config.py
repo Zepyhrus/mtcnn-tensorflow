@@ -2,7 +2,7 @@
 # coding: utf-8
 
 #迭代次数
-end_epoch = [30, 22, 22]
+end_epoch = [20, 12, 12]  #TODO: original: [30, 22, 22]
 #经过多少batch显示数据
 display = 100
 #初始学习率
