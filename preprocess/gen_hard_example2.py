@@ -207,10 +207,6 @@ for image, boxes in tqdm(zip(im_idx_list, gt_boxes_list)):
   # print(neg_num, end='\t')
   # print(part_num, end='\t')
   # print(boxes.shape[0])
-  
-  counter += 1
-  if counter >= 100:
-    break
 
 neg_file.close()
 part_file.close()

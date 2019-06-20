@@ -8,3 +8,5 @@ model
 */__pycache__/
 
 err.log
+
+mtcnn.sh
