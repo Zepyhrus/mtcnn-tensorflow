@@ -90,11 +90,13 @@ for filename in tqdm(filenames):
   if boxes_lab is None:
     if boxes_det is not None:
       false_detection += len(boxes_det)
+      all_detection += len(boxes_det)
     continue
 
   if boxes_det.shape[0] == 0:
     if boxes_lab is not None:
       missing_detection += len(boxes_lab)
+      all_labels += len(boxes_lab)
     continue
 
   for box in boxes_lab:
