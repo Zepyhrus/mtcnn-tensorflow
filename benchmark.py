@@ -117,15 +117,18 @@ for filename in tqdm(filenames):
   all_detection += len(boxes_det)
   all_labels += len(boxes_lab)
 
-print('Detect\tMissing\tAll\tFalse')
+print('Detect\tMissing\tFalse\tAll')
 print('{}\t{}\t{}\t{}'.format(all_detection,
-                              missing_detection, all_labels, false_detection))
+                              missing_detection, false_detection, all_labels))
 
-precision = round(1 - false_detection / (all_labels + false_detection), 4)
-print('Precision: {}'.format(precision))
+precision = 1 - false_detection / all_detection
+print('Precision: {}'.format(round(precision, 4)))
 
-recall = round(1 - missing_detection / (all_detection + missing_detection), 4)
-print('Recall: {}'.format(recall))
+recall = 1 - missing_detection / all_labels
+print('Recall: {}'.format(round(recall, 4)))
+
+f1_score = 2 * precision * recall / (precision + recall)
+print('F1 score: {}'.format(round(f1_score, 4)))
 
 
   
