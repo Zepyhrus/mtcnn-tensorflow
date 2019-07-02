@@ -244,6 +244,13 @@ All detectors are derived from folder `detection`. Generally:
 * ONet: 
   * pos/part/neg/landmark: 138/68/110/201;
 
+### Benchmark on 2019-7-2
+1. min_face_size = 24, 92 seconds:
+Detect  Missing All     False
+2212    287     2411    49
+Precision: 0.9801
+Recall: 0.8852
+
 ## License
 MIT LICENSE
 
