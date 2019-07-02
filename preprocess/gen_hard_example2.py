@@ -179,6 +179,7 @@ for image, boxes in tqdm(zip(im_idx_list, gt_boxes_list)):
 
   # if too little postive images are generated from previous net output,
   #   add positive images manually
+  """
   if pos_num < neg_num // 3 and (pos_num+1) / (boxes.shape[0]+1) < 1:
     boxes_filtered = boxes[((boxes[:, 2] - boxes[:, 0]) > 24)]
     iou_thresh = 0.65
@@ -202,7 +203,7 @@ for image, boxes in tqdm(zip(im_idx_list, gt_boxes_list)):
     except:
       print('ERROR: adding additional boxes at ' + image)
       pass
-
+  """
   # print(pos_num, end='\t')
   # print(neg_num, end='\t')
   # print(part_num, end='\t')

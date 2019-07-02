@@ -28,6 +28,6 @@ test_mode = 'ONet'
 #选用图片还是摄像头,1是图像，2是摄像头
 input_mode = '1'
 #测试图片放置位置
-test_dir = 'picture/'
+test_dir = '/home/sherk/Workspace/mtcnn-pytorch/img/'
 #测试输出位置
 out_path = 'output/'
